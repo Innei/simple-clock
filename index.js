@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-08-22 13:49:32
- * @LastEditTime: 2020-08-22 16:06:07
+ * @LastEditTime: 2020-08-22 22:10:28
  * @LastEditors: Innei
  * @FilePath: /simple-clock/index.js
  * @Coding with Love
@@ -20,6 +20,7 @@ const $hour = document.querySelector('.hour-hand')
  * @type {HTMLDivElement}
  */
 const $second = document.querySelector('.second-hand')
+const animateEls = [$hour, $minute, $second]
 
 function springHand(el, deg) {
   dynamics.animate(
@@ -43,9 +44,11 @@ function doAnimate() {
       frequency: 550,
       friction: 120,
       duration: 1500,
+      delay: 100,
     },
   )
 }
+let timer
 
 function init() {
   doAnimate()
@@ -57,18 +60,17 @@ function init() {
   let minDeg = 180 + (360 / 60) * min
   let sDeg = 180 + (360 / 60) * s
   let hourDeg = 180 + (360 / 12) * hour
-  function setTime() {
-    springHand($minute, minDeg)
 
-    springHand($hour, hourDeg)
-    springHand($second, sDeg)
-  }
   let secondsPass = 0
   let minutesPass = 0
   let isFirstChangeSecond = false
   let isFirstChangeMinute = false
 
-  setInterval(() => {
+  function setTime() {
+    springHand($minute, minDeg)
+    springHand($hour, hourDeg)
+    springHand($second, sDeg)
+
     secondsPass++
     sDeg += 360 / 60
     if (secondsPass % (60 - (isFirstChangeSecond ? 0 : s)) == 0) {
@@ -85,10 +87,21 @@ function init() {
       isFirstChangeMinute = true
       hourDeg += 360 / 12
     }
-  }, 1000)
+  }
 
   setTime()
-  setInterval(setTime, 1000)
+  timer = setInterval(setTime, 1000)
 }
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState == 'hidden') {
+    animateEls.map(($) => {
+      dynamics.stop($)
+    })
+    timer = clearInterval(timer)
+  }
 
+  if (document.visibilityState == 'visible') {
+    init()
+  }
+})
 init()
