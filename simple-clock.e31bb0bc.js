@@ -2212,7 +2212,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /*
  * @Author: Innei
  * @Date: 2020-08-22 13:49:32
- * @LastEditTime: 2020-08-22 16:06:07
+ * @LastEditTime: 2020-08-22 22:10:28
  * @LastEditors: Innei
  * @FilePath: /simple-clock/index.js
  * @Coding with Love
@@ -2233,6 +2233,7 @@ var $hour = document.querySelector('.hour-hand');
  */
 
 var $second = document.querySelector('.second-hand');
+var animateEls = [$hour, $minute, $second];
 
 function springHand(el, deg) {
   _dynamics.default.animate(el, {
@@ -2252,9 +2253,12 @@ function doAnimate() {
     type: _dynamics.default.spring,
     frequency: 550,
     friction: 120,
-    duration: 1500
+    duration: 1500,
+    delay: 100
   });
 }
+
+var timer;
 
 function init() {
   doAnimate();
@@ -2265,18 +2269,15 @@ function init() {
   var minDeg = 180 + 360 / 60 * min;
   var sDeg = 180 + 360 / 60 * s;
   var hourDeg = 180 + 360 / 12 * hour;
+  var secondsPass = 0;
+  var minutesPass = 0;
+  var isFirstChangeSecond = false;
+  var isFirstChangeMinute = false;
 
   function setTime() {
     springHand($minute, minDeg);
     springHand($hour, hourDeg);
     springHand($second, sDeg);
-  }
-
-  var secondsPass = 0;
-  var minutesPass = 0;
-  var isFirstChangeSecond = false;
-  var isFirstChangeMinute = false;
-  setInterval(function () {
     secondsPass++;
     sDeg += 360 / 60;
 
@@ -2292,11 +2293,24 @@ function init() {
       isFirstChangeMinute = true;
       hourDeg += 360 / 12;
     }
-  }, 1000);
+  }
+
   setTime();
-  setInterval(setTime, 1000);
+  timer = setInterval(setTime, 1000);
 }
 
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState == 'hidden') {
+    animateEls.map(function ($) {
+      _dynamics.default.stop($);
+    });
+    timer = clearInterval(timer);
+  }
+
+  if (document.visibilityState == 'visible') {
+    init();
+  }
+});
 init();
 },{"dynamics.js":"node_modules/dynamics.js/lib/dynamics.js"}],"../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -2326,7 +2340,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49786" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65020" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
