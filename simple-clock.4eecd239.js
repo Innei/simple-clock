@@ -4,4 +4,4 @@ var t;(function(){var e,n,r,o,i,s,a,l,u,f,h,p,c,m,d,g,y,v,b,w,x,M,S,k,T,C,H,R,q,
 },{}],"Focm":[function(require,module,exports) {
 "use strict";var e=t(require("dynamics.js"));function t(e){return e&&e.__esModule?e:{default:e}}var n=document.querySelector(".minute-hand"),r=document.querySelector(".hour-hand"),u=document.querySelector(".second-hand");function o(t,n){e.default.animate(t,{rotateZ:n},{frequency:500,type:e.default.spring})}function a(){var t=document.querySelector(".clock-root .point");e.default.animate(t,{scale:3},{type:e.default.spring,frequency:550,friction:120,duration:1500})}function c(){a();var e=new Date,t=e.getMinutes(),c=e.getSeconds(),i=e.getHours(),d=180+6*t,f=180+6*c,l=180+30*i;function s(){o(n,d),o(r,l),o(u,f)}var y=0,m=0,q=!1,v=!1;setInterval(function(){f+=6,++y%(60-(q?0:c))==0&&(q=!0,y=0,d+=6,m++),m&&m%(60-(v?0:t))==0&&(m=0,v=!0,l+=30)},1e3),s(),setInterval(s,1e3)}c();
 },{"dynamics.js":"kt6a"}]},{},["Focm"], null)
-//# sourceMappingURL=simple-clock/simple-clock.4eecd239.js.map
+//# sourceMappingURL=/simple-clock/simple-clock.4eecd239.js.map
