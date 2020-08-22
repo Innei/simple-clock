@@ -1,0 +1,12 @@
+{
+  "name": "simple-clock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "dynamics.js": "1.1.5"
+  },
+  "devDependencies": {
+    "cssnano": "4.1.10"
+  }
+}
